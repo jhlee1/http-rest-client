@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'lee.joohan'
+version findProperty("build_version")
+
+sourceCompatibility = 1.11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
+    implementation group: 'org.springframework', name: 'spring-web', version: '4.3.13.RELEASE'
+    implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.10'
+    implementation 'org.slf4j:slf4j-api:1.6.6'
+    implementation 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: '2.2.0.RELEASE'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    from {
+        configurations.compile.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'lee.joohan'
+            artifactId = 'http-rest-client'
+            version = findProperty("build_version")
+            artifact String.format('build/libs/http-rest-client-%s.jar', findProperty("build_version"))
+
+        }
+    }
+    repositories {
+        maven {
+            url 'https://nexus.custom.url/repository/maven-releases/'
+            credentials {
+                username findProperty("nexus_username")
+                password findProperty("nexus_password")
+            }
+        }
+    }
+}
