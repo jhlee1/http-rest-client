@@ -7,6 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
@@ -28,7 +29,7 @@ class HttpRestClientTest {
     HttpRequest httpRequest = HttpRequest.builder()
         .url("/customers");
 
-    String result = httpRestClient.get(httpRequest, String.class);
+    ResponseEntity<String> result = httpRestClient.get(httpRequest, String.class);
 
     System.out.println("The response: " + result);
   }
@@ -39,7 +40,7 @@ class HttpRestClientTest {
         .url("/customers")
         .queryParams("firstName", "John");
 
-    String result = httpRestClient.get(httpRequest, String.class);
+    ResponseEntity<String> result = httpRestClient.get(httpRequest, String.class);
 
     System.out.println("The result: " + result);
   }
@@ -50,7 +51,7 @@ class HttpRestClientTest {
         .url("/customers")
         .requestBody(new CreateCustomerRequest("first", "last", 10));
 
-    String response = httpRestClient.post(httpRequest, new ParameterizedTypeReference<String>() {});
+    ResponseEntity<String> response = httpRestClient.post(httpRequest, new ParameterizedTypeReference<String>() {});
 
     System.out.println("The response: " + response);
   }
@@ -61,7 +62,7 @@ class HttpRestClientTest {
         .url("/customers/{customerId}")
         .pathVariables("c572341e-77ca-4921-a316-674e0ff888a7");
 
-    String response = httpRestClient.delete(httpRequest, new ParameterizedTypeReference<String>() {});
+    ResponseEntity<String> response = httpRestClient.delete(httpRequest, new ParameterizedTypeReference<String>() {});
 
     System.out.println("The response: " + response);
   }

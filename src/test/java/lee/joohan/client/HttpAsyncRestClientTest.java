@@ -20,11 +20,11 @@ import org.springframework.util.concurrent.ListenableFuture;
 @ExtendWith(SpringExtension.class)
 class HttpAsyncRestClientTest {
   private final String baseUrl = "http://localhost:8080";
-  private HttpAsyncRestClient httpAsyncRestClient;
+  private HttpRestClient httpRestClient;
 
   @BeforeEach
   void setUp() {
-    httpAsyncRestClient = new HttpAsyncRestClient(baseUrl);
+    httpRestClient = new HttpRestClient(baseUrl);
   }
 
   @Test
@@ -32,7 +32,7 @@ class HttpAsyncRestClientTest {
     HttpRequest httpRequest = HttpRequest.builder()
         .url("/customers");
 
-    ListenableFuture<ResponseEntity<String>> result = httpAsyncRestClient.get(httpRequest, String.class);
+    ListenableFuture<ResponseEntity<String>> result = httpRestClient.getAsync(httpRequest, String.class);
 
     try {
       System.out.println("The response: " + result.get().getBody());
@@ -49,7 +49,7 @@ class HttpAsyncRestClientTest {
         .url("/customers")
         .queryParams("firstName", "John");
 
-    ListenableFuture<ResponseEntity<String>> result = httpAsyncRestClient.get(httpRequest, String.class);
+    ListenableFuture<ResponseEntity<String>> result = httpRestClient.getAsync(httpRequest, String.class);
 
     try {
       System.out.println("The response: " + result.get().getBody());
@@ -66,7 +66,7 @@ class HttpAsyncRestClientTest {
         .url("/customers")
         .requestBody(new CreateCustomerRequest("first", "last", 10));
 
-    ListenableFuture<ResponseEntity<String>> response = httpAsyncRestClient.post(httpRequest, new ParameterizedTypeReference<String>() {});
+    ListenableFuture<ResponseEntity<String>> response = httpRestClient.postAsync(httpRequest, new ParameterizedTypeReference<String>() {});
 
     try {
       System.out.println("The response: " + response.get().getBody());
@@ -84,7 +84,7 @@ class HttpAsyncRestClientTest {
         .requestBody(new CreateCustomerRequest("EditedFirst", "Editedlast", 11))
         .pathVariables("6418b98f-f22d-4e09-969b-523dd80a8b51");
 
-    ListenableFuture<ResponseEntity<String>> response = httpAsyncRestClient.put(httpRequest, new ParameterizedTypeReference<String>() {});
+    ListenableFuture<ResponseEntity<String>> response = httpRestClient.putAsync(httpRequest, new ParameterizedTypeReference<String>() {});
 
     try {
       System.out.println("The response: " + response.get().getBody());
@@ -101,7 +101,7 @@ class HttpAsyncRestClientTest {
         .url("/customers/{userId}")
         .pathVariables("be5fa3c-2fbd-4ced-a40b-11b8ef2c4534");
 
-    ListenableFuture<ResponseEntity<String>> response = httpAsyncRestClient.delete(httpRequest, new ParameterizedTypeReference<String>() {});
+    ListenableFuture<ResponseEntity<String>> response = httpRestClient.deleteAsync(httpRequest, new ParameterizedTypeReference<String>() {});
 
     try {
       System.out.println("The response: " + response.get().getBody());

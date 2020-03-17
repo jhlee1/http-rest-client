@@ -3,6 +3,7 @@ package lee.joohan.common;
 import java.net.URI;
 import java.util.Map;
 import java.util.Optional;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -82,6 +83,10 @@ public class HttpRequest {
 
   public RequestEntity toRequestEntity() {
     return new RequestEntity(requestBody, headers, null, null);
+  }
+
+  public HttpEntity getHttpEntity() {
+    return new HttpEntity(requestBody, headers);
   }
 
   public String getQueriedUrl() {
